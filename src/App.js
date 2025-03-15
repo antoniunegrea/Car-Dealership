@@ -1,6 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 
+function MyButton() {
+  return (
+    <button>Click me!</button>
+  );
+}
+
 function App() {
   return (
     <div className="App">
@@ -18,6 +24,9 @@ function App() {
           Learn React
         </a>
       </header>
+      <div>
+        <MyButton/>  
+      </div>
     </div>
   );
 }
