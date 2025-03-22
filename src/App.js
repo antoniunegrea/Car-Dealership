@@ -1,5 +1,5 @@
 import "./styles.css"
-import { BrowserRouter as Router, Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useNavigate, useParams } from "react-router";
 import { useState } from "react";
 
 {/* TO DO
@@ -7,9 +7,9 @@ import { useState } from "react";
 */}
 
 const initialCarsList = [
-  { manufacturer: "BMW", model: "E91", year: 2009 },
-  { manufacturer: "Audi", model: "A4", year: 2021 },
-  { manufacturer: "Dacia", model: "Logan", year: 2025 }
+  { manufacturer: "BMW", model: "E91", year: 2009, price: 5500 },
+  { manufacturer: "Audi", model: "A4", year: 2021, price: 2500 },
+  { manufacturer: "Dacia", model: "Logan", year: 2025, price: 20000 }
 ];
 
 function Home({carsList, setCarsList}) {
@@ -81,6 +81,7 @@ function Home({carsList, setCarsList}) {
             <th onClick={() => sortHandler("manufacturer")}>Manufacturer</th>
             <th onClick={() => sortHandler("model")}>Model</th>
             <th onClick={() => sortHandler("year")}>Year</th>
+            <th onClick={() => sortHandler("price")}>Price</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -95,6 +96,7 @@ function Home({carsList, setCarsList}) {
                 <td>{car.manufacturer}</td>
                 <td>{car.model}</td>
                 <td>{car.year}</td>
+                <td>{car.price}</td>
                 <td>
                   <button onClick={() => editButtonHandler(index)}>Edit</button>
                   <button onClick={() => deleteButtonHandler(index)}>Delete</button>
@@ -118,17 +120,18 @@ function Operations({carsList, setCarsList})
     const { id } = useParams();
 
     const isEditing = id !== undefined;
-    const carToEdit = isEditing ? carsList[parseInt(id)] : { manufacturer: "", model: "", year: "" };
+    const carToEdit = isEditing ? carsList[parseInt(id)] : { manufacturer: "", model: "", year: "", price: "" };
 
 
     const [manufacturer, setManufacturer] = useState(carToEdit?.manufacturer || "");
     const [model, setModel] = useState(carToEdit?.model || "");
     const [year, setYear] = useState(carToEdit?.year || "");
+    const [price, setPrice] = useState(carToEdit?.price || "");
 
-    const [errors, setErrors] = useState({ manufacturer: '', model: '', year: '' });
+    const [errors, setErrors] = useState({ manufacturer: '', model: '', year: '' , price: ''});
 
     const validateData = () =>{
-      let newErrors = {manufacturer: '', model: '', year: ''};
+      let newErrors = {manufacturer: '', model: '', year: '', price: ''};
 
       if(manufacturer.length < 2)
       {
@@ -145,6 +148,11 @@ function Operations({carsList, setCarsList})
         newErrors.year = "Year must be positive and not from the future :))";
       }
 
+      if(price < 0)
+      {
+        newErrors.price = "Price must be positive";
+      }
+
       setErrors(newErrors);
 
       return Object.values(newErrors).every((error) => error === '');
@@ -152,16 +160,17 @@ function Operations({carsList, setCarsList})
 
     const handleSubmit = (e) =>{
       e.preventDefault();
-      const newCar = {manufacturer, model, year};
+      const newCar = {manufacturer, model, year, price};
       if (validateData()) {
-        alert("Form submitted successfully!");
         if (isEditing) {
           const updatedCars = [...carsList];
           updatedCars[parseInt(id)] = newCar;
           setCarsList(updatedCars);
+          alert("Car updated successfully!");
         } 
         else {
           setCarsList([...carsList, newCar]);
+          alert("Car added successfully!");
         }
       }
       else{
@@ -204,6 +213,16 @@ function Operations({carsList, setCarsList})
               />
               <div className="errors">
                 {errors.year}
+              </div>
+              <input
+                  type="number"
+                  placeholder="Price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+              />
+              <div className="errors">
+                {errors.price}
               </div>
               <button type="submit">{isEditing ? "Edit Car" : "Add Car"}</button>
           </form>
