@@ -16,3 +16,20 @@ header{
 .button{
     width: 100%
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 10px;
+  }
+  
+  .pagination li {
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .pagination .active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
