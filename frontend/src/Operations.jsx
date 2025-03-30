@@ -19,9 +19,10 @@ function Operations({carsList, setCarsList})
 
     const [errors, setErrors] = useState({ manufacturer: '', model: '', year: '' , price: ''});
 
+    //validation is moved in backend
     const validateData = () =>{
       let newErrors = {manufacturer: '', model: '', year: '', price: ''};
-
+      /*
       if(manufacturer.length < 2)
       {
         newErrors.manufacturer = "Manufacturer must have at least 2 characters";
@@ -41,31 +42,27 @@ function Operations({carsList, setCarsList})
       {
         newErrors.price = "Price must be positive";
       }
-
+        */
       setErrors(newErrors);
-
       return Object.values(newErrors).every((error) => error === '');
     }
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = (e) => {
       e.preventDefault();
-      const newCar = {manufacturer, model, year, price}; 
+      const newCar = { manufacturer, model, year, price };
       if (validateData()) {
         if (isEditing) {
-          const updatedCars = [...carsList];
-          updatedCars[parseInt(id)] = newCar;
-          setCarsList(updatedCars);
-          alert("Car updated successfully!");
-        } 
-        else {
-          setCarsList([...carsList, newCar]);
-          alert("Car added successfully!");
+          setCarsList(parseInt(id), newCar);
+          //alert("Car updated successfully!");
+        } else {
+          setCarsList(newCar);
+          //alert("Car added successfully!");
         }
+      } else {
+        alert("Correct the errors!");
       }
-      else{
-        alert("Correct the errors!")
-      }
-    }
+    };
+    
 
     return (
         <div>

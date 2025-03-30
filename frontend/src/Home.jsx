@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 
-function Home({ carsList, setCarsList }) {
+function Home({ carsList, setCarsList, deleteCar}) {
     const navigate = useNavigate();
   
     const [sortConfig, setSortConfig] = useState({ key: 'manufacturer', direction: 'ascending' });
@@ -44,9 +44,10 @@ function Home({ carsList, setCarsList }) {
     const deleteButtonHandler = (index) => {
       const confirmDelete = window.confirm('Are you sure you want to delete this car?');
       if (confirmDelete) {
-        setCarsList(carsList.filter((_, idx) => idx !== index));
+        deleteCar(index);
       }
     };
+    
   
     const editButtonHandler = (index) => {
       navigate("/operations/" + index);
@@ -88,17 +89,18 @@ function Home({ carsList, setCarsList }) {
     return (
       <div className="page">
         <header>
-          Car Dealership
-        </header>
-        <div className="searchBar">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{ marginBottom: '10px', padding: '5px' }}
-          />
+          <h1 className="main-header-text">Car Dealership</h1>
+          <div className="search-bar-container">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="search-bar"
+            />
         </div>
+        </header>
+        
         <div>
           <ul>
             Stats:
@@ -108,53 +110,56 @@ function Home({ carsList, setCarsList }) {
             <li>Avg error: ${averageError}</li>
           </ul>
         </div>
-        <table border="1" style={{ width: "70%" }}>
-          <thead>
-            <tr>
-              <th onClick={() => sortHandler("manufacturer")}>Manufacturer</th>
-              <th onClick={() => sortHandler("model")}>Model</th>
-              <th onClick={() => sortHandler("year")}>Year</th>
-              <th onClick={() => sortHandler("price")}>Price</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {displayedCars.length === 0 ? (
+        <div className="table-container">
+        
+          <table border="1">
+            <thead>
               <tr>
-                <td colSpan="5">No cars found</td>
+                <th onClick={() => sortHandler("manufacturer")}>Manufacturer</th>
+                <th onClick={() => sortHandler("model")}>Model</th>
+                <th onClick={() => sortHandler("year")}>Year</th>
+                <th onClick={() => sortHandler("price")}>Price</th>
+                <th>Actions</th>
               </tr>
-            ) : (
-              displayedCars.map((car, index) => (
-                <tr key={index}>
-                  <td>{car.manufacturer}</td>
-                  <td>{car.model}</td>
-                  <td>{car.year}</td>
-                  <td
-                    style={{
-                      backgroundColor:
-                        parseInt(car.price) === stats.maxPrice
-                          ? 'lightcoral'
-                          : parseInt(car.price) === stats.minPrice
-                          ? 'lightgreen'
-                          : Math.abs(parseInt(car.price) - stats.avgPrice) < averageError
-                          ? 'lightblue'
-                          : 'transparent',
-                    }}
-                  >
-                    {car.price}
-                  </td>
-                  <td>
-                    <button onClick={() => editButtonHandler(index)}>Edit</button>
-                    <button onClick={() => deleteButtonHandler(index)}>Delete</button>
-                  </td>
+            </thead>
+            <tbody>
+              {displayedCars.length === 0 ? (
+                <tr>
+                  <td colSpan="5">No cars found</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-        <div>
-          <button onClick={addButtonHandler} className="button">Add</button>
-          <button onClick={chartsButtonHandler} className="button">Open Charts</button>
+              ) : (
+                displayedCars.map((car, index) => (
+                  <tr key={index}>
+                    <td>{car.manufacturer}</td>
+                    <td>{car.model}</td>
+                    <td>{car.year}</td>
+                    <td
+                      style={{
+                        backgroundColor:
+                          parseInt(car.price) === stats.maxPrice
+                            ? 'lightcoral'
+                            : parseInt(car.price) === stats.minPrice
+                            ? 'lightgreen'
+                            : Math.abs(parseInt(car.price) - stats.avgPrice) < averageError
+                            ? 'lightblue'
+                            : 'transparent',
+                      }}
+                    >
+                      {car.price}
+                    </td>
+                    <td>
+                      <button className="action-button" onClick={() => editButtonHandler(index)}>Edit</button>
+                      <button className="action-button" onClick={() => deleteButtonHandler(index)}>Delete</button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>  
+        </div>
+        <div className="button-container">
+          <button onClick={addButtonHandler} className="navigate-button">Add</button>
+          <button onClick={chartsButtonHandler} className="navigate-button">Open Charts</button>
         </div>
         <ReactPaginate
           previousLabel={"← Previous"}

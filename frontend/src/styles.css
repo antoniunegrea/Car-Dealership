@@ -1,0 +1,81 @@
+.page{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: antiquewhite;
+    width: 100%;
+}
+
+header{
+    position: relative;
+    width: 100%;
+    height: 75px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.main-header-text{
+    width: 50%;
+    font-size: 50px;
+    font-weight: bold;
+    padding-left: 30px;
+    margin: 0;
+}
+
+.search-bar-container{
+    width: 30%;
+}
+
+.search-bar{
+    width:90%;
+    height: 20px;
+}
+
+.table-container{
+    display: flex;
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    
+}
+
+table{
+    width: 60%;
+    margin: 20px 0 20px 0;
+}
+
+.action-button{
+    width: 30%;
+}
+
+.button-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigate-button{
+    width: 100px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 10px;
+  }
+  
+  .pagination li {
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .pagination .active {
+    font-weight: bold;
+    text-decoration: underline;
+  }
